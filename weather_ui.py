@@ -53,7 +53,7 @@ if st.button("Get Weather & Outfit Suggestion"):
             )
 
             ai_response = client.chat.completions.create(
-                model="gpt-3.5-turbo"
+                model="gpt-3.5-turbo",
                 temperature=0.5,  # More randomness
                 messages=[
                     {"role": "system", "content": "You are a witty but practical AI assistant who suggests clothing. Be sarcastic but reasonable, considering the actual weather conditions."},
