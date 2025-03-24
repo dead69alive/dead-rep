@@ -54,7 +54,7 @@ if st.button("Get Weather & Outfit Suggestion"):
                 model="gpt-3.5-turbo",
                 temperature=0.9,  # More randomness & sarcasm
                 messages=[
-                    {"role": "system", "content": "You are a sarcastic, humorous fashion expert."},
+                    {"role": "system", "content": "You are a a nice realistic AI that suggest clothing ."},
                     {"role": "user", "content": prompt}
                 ]
             )
