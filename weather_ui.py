@@ -1,3 +1,4 @@
+
 import os
 import requests
 import openai
@@ -28,22 +29,34 @@ if st.button("Get Weather & Outfit Suggestion"):
             temp = data["main"]["temp"]
             feels_like = data["main"]["feels_like"]
             humidity = data["main"]["humidity"]
+            wind_speed = data["wind"]["speed"]
+            pressure = data["main"]["pressure"]
+            visibility = data.get("visibility", "N/A")
 
             # Display weather info
             st.subheader(f"Weather in {city}")
-            st.write(f"**Condition:** {weather_desc}")
+            st.write(f"**Condition:** {weather_desc.capitalize()}")
             st.write(f"**Temperature:** {temp}°C (Feels like {feels_like}°C)")
             st.write(f"**Humidity:** {humidity}%")
+            st.write(f"**Wind Speed:** {wind_speed} m/s")
+            st.write(f"**Pressure:** {pressure} hPa")
+            st.write(f"**Visibility:** {visibility} meters")
 
             # Generate clothing suggestion with OpenAI
             prompt = (
                 f"The weather in {city} is {weather_desc}, with a temperature of {temp}°C, "
-                f"feels like {feels_like}°C, and {humidity}% humidity. "
-                "What should someone wear for this weather?"
+                f"feels like {feels_like}°C, humidity of {humidity}%, wind speed of {wind_speed} m/s, "
+                f"pressure at {pressure} hPa, and visibility of {visibility} meters. "
+                "Give a sarcastic yet useful outfit suggestion."
             )
+
             ai_response = client.chat.completions.create(
                 model="gpt-3.5-turbo",
-                messages=[{"role": "user", "content": prompt}]
+                temperature=0.9,  # More randomness & sarcasm
+                messages=[
+                    {"role": "system", "content": "You are a sarcastic, humorous fashion expert."},
+                    {"role": "user", "content": prompt}
+                ]
             )
 
             clothing_suggestion = ai_response.choices[0].message.content
@@ -53,5 +66,6 @@ if st.button("Get Weather & Outfit Suggestion"):
             st.write(clothing_suggestion)
         else:
             st.error("Failed to retrieve weather data. Check city name and API key.")
+    
 
 
